@@ -1,0 +1,71 @@
+.App {
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.App-logo {
+  /*animation: App-logo-spin infinite 20s linear;*/
+  width: 25%;
+}
+
+.App-header {
+  background-color: #78d1f5;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+  color: #f57315;
+  text-align: center;
+}
+
+.App-subtitle {
+  font-size: 1em;
+  text-align: center;
+}
+
+.App-intro {
+  font-size: large;
+  padding: 1% 15%;
+  text-align: justify;
+}
+
+.Image-capa {
+  width: 20%;
+}
+
+#autor_criacao {
+  text-align: left;
+  padding-left: 15%;
+}
+
+.div-texto a {
+  text-decoration: none;
+  color: #78d1f5;
+}
+
+.div-texto a:hover {
+  color: #78d1aa;
+}
+
+.div-texto h1 {
+  color: orange;
+}
+
+.div-texto h2 {
+  color: red;
+}
+
+.div-texto p {
+  text-align: justify;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

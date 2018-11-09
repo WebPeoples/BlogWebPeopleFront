@@ -1,0 +1,106 @@
+*{ 
+  font-family: 'Arial'
+}
+
+
+.root-dashboard{
+    display: flex;
+}
+  
+  /* LISTA DE ARTIGOS */ 
+
+
+  .article-card {
+    z-index: 1;
+  }
+
+  #lista-artigos {
+    width: 75%;
+    margin: 0 auto;  
+    flex: 3;
+  }
+  #lista-artigos div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  #lista-artigos div .article-card{
+    cursor: pointer;
+    background: #fff;
+    -webkit-box-shadow: 3px 3px 5px 1px #bbb;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    3px 3px 5px 1px #bbb;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         3px 3px 5px 1px #bbb;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    padding: 20px; 
+    flex: 1;
+    margin: 5px;
+  }
+  
+  #lista-artigos div .article-card h2 {
+    font-size: 18px;
+    color: #00a8ec;
+  }
+  
+  #lista-artigos div .article-card .article-card-content {
+    display: flex;
+    flex-direction: row;
+    
+    width: 100%;
+  }
+  
+  .image-card-article {
+    display: block;
+    flex: 1;   
+    
+  }
+  
+  .subtitle-card-article {
+      flex: 1;
+      text-align: justify;
+      font-size: 13px;
+  }
+
+  /* ==== */ 
+
+  #left-menu {
+    width: 30%;
+    background-color: grey;
+  }
+
+  #left-menu #logo-image {
+      display: block;
+      margin: 5% auto;
+      width: 100%;
+  }
+  
+  #left-menu ul {
+    margin-top: 10%;
+    list-style: none;
+  }
+  #left-menu li {
+      cursor: pointer;
+      color: #ddd;
+      font-size: 20px;
+      font-weight: bold;
+      transition: 0.5s;
+      display: flex;
+  }
+
+  #left-menu li:hover {
+      color: #fff;
+  }
+
+  #left-menu a {
+    cursor: pointer;
+    color: #ddd;
+    font-size: 20px;
+    font-weight: bold;
+    transition: 0.5s;
+    display: flex;
+    text-decoration: none;
+}
+
+#left-menu a:hover {
+    color: #fff;
+}

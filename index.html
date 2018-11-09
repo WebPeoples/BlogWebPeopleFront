@@ -1,0 +1,76 @@
+<html>
+
+<head>
+    <title>Mika</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+
+    <style>
+        button {
+            color: red;
+            background: black
+        }</style>
+
+    <div><h1>BOLSONARO PRIMEIRO TURNO</h1></div>
+    
+    <div id="content">
+    </div>
+
+    <div>RODAPÉ DO BOLSO</div>
+
+    <script>
+        $(document).ready(() => {
+
+            let controle = 0;
+            let htmlElements = [
+                "<input  id='radiob' type=\"radio\" name=\"gender\" value=\"v\"> Male<br><input type=\"radio\" name=\"gender\" value=\"f\"> Female<br><input type=\"radio\" name=\"gender\" value=\"f\"> Other<button id=\"botao\" >Escolher</button>",
+                "<input type=\"radio\" name=\"gender\" value=\"f\"> Marina<br><input type=\"radio\" name=\"gender\" value=\"v\"> Bolsonaro<br><input type=\"radio\" name=\"gender\" value=\"f\"> Other<button id=\"botao\">Escolher</button>"
+            ];
+
+            $('').css({"color": "red"});
+            $("#content").html(htmlElements[0]);
+            controle++;
+
+            $("#botao").on('click', () => {
+                console.log("Click");
+
+                if ($('input[name=gender]:checked').val() === 'v') {
+                    alert($('input[name=gender]:checked').val())
+                    proximaPergunta();
+                } else {
+                    alert("Errou burro")
+                }
+
+                //alert('Acertou poorrraa');
+            });
+
+            const proximaPergunta = () => {
+                $("#content").html(htmlElements[controle]);
+                controle++;
+
+                $("#botao").on('click', () => {
+                    console.log("Click");
+                    if ($('input[name=gender]:checked').val() === 'v') {
+                        alert($('input[name=gender]:checked').val())
+                        proximaPergunta();
+                    } else {
+                        alert("Errou burro")
+                        controle = 0;
+                        proximaPergunta();
+                    }
+
+                    //alert('Acertou poorrraa');
+                });
+            }
+
+
+            //
+
+        });
+    </script>
+</body>
+
+</html>
