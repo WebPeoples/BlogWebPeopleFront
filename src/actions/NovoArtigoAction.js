@@ -8,20 +8,19 @@ import {
   ADICIONA_ARTIGO_ERRO,
   REINICIAR_ESTADO,
   globalUrl,
-  MODIFICA_IMAGEM
+  MODIFICA_IMAGEM,
+  PROGRESS_BAR,
+  EDITANDO_ARTIGO
 } from "../components/types";
 
 import axios from "axios";
 import firebase from "firebase";
 
-
-
-
 export const reiniciarEstado = () => {
   return {
     type: REINICIAR_ESTADO
-  }
-}
+  };
+};
 
 export const modificaTitulo = texto => {
   return {
@@ -55,8 +54,8 @@ export const modificaImagem = imagem => {
   return {
     type: MODIFICA_IMAGEM,
     payload: imagem
-  }
-}
+  };
+};
 
 export const modificaEvent = event => {
   console.log(event);
@@ -99,6 +98,9 @@ export const editaArtigo = (
   imagem
 ) => {
   return dispatch => {
+    dispatch({
+      type: EDITANDO_ARTIGO
+    });
     uploadImage(
       event,
       titulo,
@@ -114,7 +116,6 @@ export const editaArtigo = (
   };
 };
 
-
 const uploadImage = (
   event,
   titulo,
@@ -127,7 +128,15 @@ const uploadImage = (
   index,
   imagem
 ) => {
-  console.log("uploadImage", event);
+  let data = {
+    titulo,
+    subtitulo,
+    autor,
+    texto,
+    id: index,
+    imagem
+  };
+
   if (event.name != null) {
     var storageRef = firebase.storage().ref();
 
@@ -146,6 +155,10 @@ const uploadImage = (
         // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log("Upload is " + progress + "% done");
+        dispatch({
+          type: PROGRESS_BAR,
+          payload: progress
+        });
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED: // or 'paused'
             console.log("Upload is paused");
@@ -177,58 +190,63 @@ const uploadImage = (
       },
       function() {
         // Upload completed successfully, now we can get the download URL
-        uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
-          const data = {
-            titulo,
-            subtitulo,
-            data_criacao,
-            autor,
-            texto,
-            imagem: downloadURL,
-            index
-          };
+        uploadTask.snapshot.ref
+          .getDownloadURL()
+          .then(function(downloadURL) {
+            data = { ...data, imagem: downloadURL };
 
-          axios.post(`${globalUrl}${editOrInsert}`, data).then(res => {
-            console.log(res);
-            if (res === 200) {
-              dispatch({
-                type: ADICIONA_ARTIGO_COM_SUCESSO,
-                payload: 200
-              });
-            } else {
-              dispatch({
-                type: ADICIONA_ARTIGO_ERRO,
-                payload: 500
-              });
-            }
+            axios.post(`${globalUrl}${editOrInsert}`, data).then(res => {
+              console.log("Respostas do adcionar artigo", res);
+              if (res.status === 200) {
+                dispatch({
+                  type: ADICIONA_ARTIGO_COM_SUCESSO,
+                  payload: res.data
+                });
+              } else {
+                dispatch({
+                  type: ADICIONA_ARTIGO_ERRO,
+                  payload: res.data
+                });
+              }
+            });
+          })
+          .catch(err => {
+            console.log(err.response)
+            dispatch({
+              type: ADICIONA_ARTIGO_ERRO,
+              payload: err.response.data
+            });
           });
-        });
       }
     );
-  } else {
-    const data = {
-      titulo,
-      subtitulo,
-      data_criacao,
-      autor,
-      texto,
-      index,
-      imagem
-    };
-
-    axios.post(`${globalUrl}${editOrInsert}`, data).then(res => {
-      console.log(res);
-      if (res === 200) {
-        dispatch({
-          type: ADICIONA_ARTIGO_COM_SUCESSO,
-          payload: 200
-        });
-      } else {
+  } else if (event.name === undefined) {
+    axios
+      .post(`${globalUrl}${editOrInsert}`, data)
+      .then(res => {
+        console.log("resposta", res.body);
+        if (res.status === 200) {
+          dispatch({
+            type: ADICIONA_ARTIGO_COM_SUCESSO,
+            payload: res.data
+          });
+        } else {
+          dispatch({
+            type: ADICIONA_ARTIGO_ERRO,
+            payload: res.data
+          });
+        }
+      })
+      .catch(err => {
+        console.log(err.response)
         dispatch({
           type: ADICIONA_ARTIGO_ERRO,
-          payload: 500
+          payload: err.response.data
         });
-      }
+      });
+  } else {
+    dispatch({
+      type: ADICIONA_ARTIGO_ERRO,
+      payload: "Você precisa inserir uma imagem para adicionar um artigo."
     });
   }
 };

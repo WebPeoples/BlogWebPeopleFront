@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import axios from "axios";
-import { globalUrl } from './types';
+import { globalUrl } from "./types";
+import { Redirect } from "react-router-dom";
+import { Grid, Row, Col, FormGroup, FormControl, Label } from "react-bootstrap";
 
 import "../css/EditarArtigo.css";
 import {
@@ -14,32 +16,32 @@ import {
   reiniciarEstado,
   modificaImagem
 } from "./../actions/NovoArtigoAction";
+import NavBar from "./VisualComponents/NavBar";
 
 class EditarArtigo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      imagem: ""
+      imagem: "",
+      uploadImage: "selecione uma imagem"
     };
-
-    if (!localStorage.getItem("jwtToken")) {
-      this.props.history.push("/login-wp-admins-secret");
-    }
   }
 
   componentDidMount() {
+    if (!localStorage.getItem("jwtToken")) {
+      this.props.history.push("/login-wp-admins-secret");
+    }
     const index = localStorage.getItem("currentArticle");
 
     const url = `${globalUrl}artigo/${index}`;
 
     axios.get(url).then(response => {
-      console.log(response.data);
       this.props.modificaTitulo(response.data.titulo);
       this.props.modificaSubtitulo(response.data.subtitulo);
       this.props.modificaAutor(response.data.autor);
       this.props.modificaTexto(response.data.texto);
-      this.props.modificaImagem(response.data.imagem)
+      this.props.modificaImagem(response.data.imagem);
     });
 
     this.setState({
@@ -50,13 +52,21 @@ class EditarArtigo extends Component {
   }
 
   handleImage(event) {
+    
     this.props.modificaEvent(event.target.files[0]);
     var output = document.getElementById("imageArticle");
-    output.src = URL.createObjectURL(event.target.files[0]);
+    if (event.target.files[0]) {
+      this.setState({ uploadImage: event.target.files[0].name });
+      output.src = URL.createObjectURL(event.target.files[0]);
+    } else {
+      output.src = "";
+    }
   }
 
   _editarArtigo() {
     const index = localStorage.getItem("currentArticle");
+
+    console.log(this.props.imagem);
     this.props.editaArtigo(
       this.props.event,
       this.props.titulo,
@@ -65,80 +75,111 @@ class EditarArtigo extends Component {
       this.props.autor,
       this.props.texto,
       index,
-      this.state.imagem
+      this.props.imagem
     );
   }
 
   render() {
     return (
-      <div className="root-novo-artigo">
-        <form>
-          <label>Título</label>
-          <br />
-          <input
-            name="titulo"
-            id="titulo"
-            placeholder="titulo"
-            onChange={event => this.props.modificaTitulo(event.target.value)}
-            value={this.props.titulo}
-          />
+      <div>
+        <NavBar />
+        <Grid className="root-novo-artigo" style={{ marginTop: 15 }}>
+          <FormGroup>
+            <Row>
+              <Col xs={9} md={9}>
+                <label>Título</label>
+                <br />
+                <input
+                  name="titulo"
+                  id="titulo"
+                  placeholder="titulo"
+                  className="formInput"
+                  onChange={event =>
+                    this.props.modificaTitulo(event.target.value)
+                  }
+                  value={this.props.titulo}
+                />
 
-          <br />
+                <br />
 
-          <label>Subtítulo</label>
-          <br />
-          <input
-            name="subtitulo"
-            id="subtitulo"
-            placeholder="subtitulo"
-            onChange={event => this.props.modificaSubtitulo(event.target.value)}
-            value={this.props.subtitulo}
-          />
+                <label>Subtítulo</label>
+                <br />
+                <input
+                  name="subtitulo"
+                  id="subtitulo"
+                  placeholder="subtitulo"
+                  className="formInput"
+                  onChange={event =>
+                    this.props.modificaSubtitulo(event.target.value)
+                  }
+                  value={this.props.subtitulo}
+                />
 
-          <br />
+                <br />
 
-          <label>Autor</label>
-          <br />
-          <input
-            name="autor"
-            id="autor"
-            placeholder="autor"
-            onChange={event => this.props.modificaAutor(event.target.value)}
-            value={this.props.autor}
-          />
+                <label>Autor</label>
+                <br />
+                <input
+                  name="autor"
+                  id="autor"
+                  placeholder="autor"
+                  className="formInput"
+                  onChange={event =>
+                    this.props.modificaAutor(event.target.value)
+                  }
+                  value={this.props.autor}
+                />
+              </Col>
+              <Col xs={3} md={3} style={{ marginTop: 25 }}>
+                <h3 style={{ textAlign: 'center'}}>Imagem atual</h3>
+                <img
+                  src={this.props.imagem}
+                  
+                  id="imageArticle"
+                  alt="Imagem a ser upload"
+                />
 
-          <br />
+                <br />
+                <label id="labelInputFile" for="uploadImage">
+                  {this.state.uploadImage}
+                </label>
 
-          <label>Texto</label>
-          <br />
-          <textarea
-            name="texto"
-            id="texto"
-            placeholder="texto"
-            rows="10"
-            onChange={event => this.props.modificaTexto(event.target.value)}
-            value={this.props.texto}
-          />
+                <input
+                  id="uploadImage"
+                  type="file"
+                  onChange={event => {
+                    this.handleImage(event);
+                  }}
+                />
 
-          <br />
+                <h4>{this.props.progressBar}</h4>
+                <h4>{this.props.errorMsg}</h4>
+                <h4>{this.props.addIsOk}</h4>
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={12}>
+                <label>Texto</label>
+                <br />
+                <textarea
+                  name="texto"
+                  id="texto"
+                  placeholder="texto"
+                  className="formInput"
+                  rows="10"
+                  onChange={event =>
+                    this.props.modificaTexto(event.target.value)
+                  }
+                  value={this.props.texto}
+                />
 
-          <h3>Imagem atual</h3>
-          <img
-            src={this.props.imagem}
-            style={{ width: 95, height: 95 }}
-            id="imageArticle"
-          />
+                <br />
 
-          <br />
-
-          <input
-            type="file"
-            onChange={event => {
-              this.handleImage(event);
-            }}
-          />
-        </form>
-        <button onClick={() => this._editarArtigo()}>Adicionar</button>
+                <button onClick={() => this._editarArtigo()}>Adicionar</button>
+              </Col>
+            </Row>
+          </FormGroup>
+        </Grid>
       </div>
     );
   }
@@ -151,7 +192,10 @@ const mapStateToProps = state => ({
   imagem: state.NovoArtigoReducer.imagem,
   autor: state.NovoArtigoReducer.autor,
   texto: state.NovoArtigoReducer.texto,
-  event: state.NovoArtigoReducer.event
+  event: state.NovoArtigoReducer.event,
+  errorMsg: state.NovoArtigoReducer.errorMsg,
+  addIsOk: state.NovoArtigoReducer.addIsOk,
+  progressBar: state.NovoArtigoReducer.progressBar
 });
 
 export default connect(

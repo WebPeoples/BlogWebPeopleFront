@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import ".././css/Dashboard.css";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { globalUrl } from './types';
+import { Link, Redirect } from "react-router-dom";
+import { globalUrl } from "./types";
+import { Grid, Col, Row, Image, Button } from "react-bootstrap";
+
+import NavBar from "./VisualComponents/NavBar";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -37,6 +40,7 @@ class Dashboard extends Component {
 
   renderizaListaItens() {
     const listaArtigos = this.state.listaArtigos;
+    console.log(listaArtigos);
 
     let componentListaArtigos = [];
 
@@ -44,46 +48,53 @@ class Dashboard extends Component {
       let image = listaArtigos[x].imagem;
 
       let BtnEdit = localStorage.getItem("jwtToken") ? (
-        <button
-          style={{
-            position: "absolute",
-            top: 0,
-            cursor: "pointer",
-            zIndex: 9
-          }}
-          onClick={() => this.navegarParaEditar(x)}
+        <Button
+          bsStyle="primary"
+          onClick={() => this.navegarParaEditar(listaArtigos[x].id)}
+          className="btnEditar"
         >
-          Editar
-        </button>
+          EDITAR
+        </Button>
       ) : null;
 
       componentListaArtigos.push(
-        <div className="article-card" key={x}>
-          {BtnEdit}
-
-          <div onClick={() => this.navegarParaArtigos(x)}>
-            <h2>{listaArtigos[x].titulo}</h2>
-            <div className="article-card-content">
-              <img
-                src={image}
-                className="image-card-article"
-                width="80"
-                height="150"
-                alt="colocar alt via props usando redux"
-              />
-              <p className="subtitle-card-article">
-                {listaArtigos[x].subtitulo} 2
+        <Col xs={11} md={11} className="article-card" key={x} activeKey>
+          <div>
+            <div className="div-title-subtitle">
+              <h2
+                className="title-article"
+                onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+              >
+                {listaArtigos[x].titulo}
+              </h2>
+              <p
+                className="subtitle-card-article"
+                onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+              >
+                {listaArtigos[x].subtitulo}
               </p>
+              <p className="autor-card-article">Autor: {listaArtigos[x].autor}</p>
+              <p className="data-card-article">Criado: {listaArtigos[x].created_at}</p>
             </div>
+
+            <Image
+              onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+              src={image}
+              className="image-card-article"
+              responsive
+              alt="colocar alt via props usando redux"
+            />
+
+            {BtnEdit}
           </div>
-        </div>
+        </Col>
       );
     }
 
-    return <div>{componentListaArtigos}</div>;
+    return <Row className="rowListaArtigo">{componentListaArtigos}</Row>;
   }
 
-  veryLogin = () => {
+  verifyLogin = () => {
     if (localStorage.getItem("jwtToken")) {
       return (
         <div id="left-menu">
@@ -117,10 +128,16 @@ class Dashboard extends Component {
 
   render() {
     const lista = this.renderizaListaItens();
-    return (
+    return  (
+      // <div className="root-dashboard">
+      //   {this.veryLogin()}
+      //   <div id="lista-artigos">{lista}</div>
+      // </div>
+
       <div className="root-dashboard">
-        {this.veryLogin()}
-        <div id="lista-artigos">{lista}</div>
+        <NavBar />
+        {/* {this.verifyLogin()} */}
+        <Grid>{lista}</Grid>
       </div>
     );
   }

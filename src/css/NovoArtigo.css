@@ -1,3 +1,31 @@
 #texto {
-    width: 100%;
+  width: 100%;
+}
+
+.formInput {
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    padding: 5px;
+    margin-bottom: 15px;
+}
+
+#imageArticle {
+  width: 100%;
+  margin-bottom: 15px
+}
+
+/* Esconde o input */
+input[type="file"] {
+  display: none;
+}
+
+/* Aparência que terá o seletor de arquivo */
+#labelInputFile {
+  background-color: #3498db;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  padding: 6px 20px;
 }
