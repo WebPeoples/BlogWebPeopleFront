@@ -13,7 +13,7 @@ import {
   reiniciarEstado
 } from "../../actions/NovoArtigoAction";
 import "../.././css/NovoArtigo.css";
-import NavBar from ".././VisualComponents/NavBar";
+import NavBar from ".././VisualComponents/NavBar.jsx";
 
 class NovoArtigo extends Component {
   constructor(props) {

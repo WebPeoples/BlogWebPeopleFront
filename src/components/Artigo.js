@@ -3,11 +3,13 @@ import ReactDOM from "react-dom";
 import logo from "../images/logo_menu.png";
 import "../App.css";
 import axios from "axios";
-import { globalUrl } from './types';
+import { globalUrl } from "./types";
+import { Grid, Row, Col } from "react-bootstrap";
 
+import NavBar from "./VisualComponents/NavBar.jsx";
 
 let texto = "";
-let index = '';
+let index = "";
 
 class Artigo extends Component {
   constructor(props) {
@@ -25,21 +27,18 @@ class Artigo extends Component {
     index = this.props.match.params.id;
   }
 
-  componentDidMount() {    
+  componentDidMount() {
     const url = `${globalUrl}artigo/${index}`;
 
     axios.get(url).then(response => {
-    
       document.title = response.data.titulo;
       this.setState({
         title: response.data.titulo,
         subtitle: response.data.subtitulo,
         image: response.data.imagem,
         autor: response.data.autor,
-        data_criacao: response.data.data_criacao
+        data_criacao: response.data.created_at
       });
-      
-
 
       this.setState({ texto: response.data.texto });
     });
@@ -59,22 +58,32 @@ class Artigo extends Component {
     );
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">{this.state.title}</h1>
-          <h2 className="App-subtitle">{this.state.subtitle}</h2>
-        </header>
+      <div>
+        <NavBar />
+        <div className="App">
+          <Grid className="App-header">
+            <Row>
+              <Col xs={12} md={12}>
+                <h2 className="App-title">{this.state.title}</h2>
 
-        <div id="autor_criacao">
-          <p>Autor: {this.state.autor}</p>
+                <div id="autor_criacao">
+                  <p>Por: {this.state.autor} <br/> Criado: {this.state.data_criacao}</p>
+                </div>
+                
+                <img
+                  src={this.state.image}
+                  className="Image-capa"
+                  alt="capa-artigo"
+                  style={{ marginBottom: 15 }}
+                />
 
-          <p>Data: {this.state.data_criacao}</p>
+                <h5 className="App-subtitle">{this.state.subtitle}</h5>
+              </Col>
+            </Row>
+          </Grid>
+
+          {texto}
         </div>
-
-        <img src={this.state.image} className="Image-capa" alt="capa-artigo" style={{ marginBottom: 15 }} />
-
-        {texto}
       </div>
     );
   }

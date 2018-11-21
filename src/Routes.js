@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Switch, Route, Redirect } from "react-router";
+
 import firebase from "firebase/app";
 import axios from "axios";
 import { globalUrl } from "./components/types";
@@ -9,6 +10,9 @@ import Dashboard from "./components/Dashboard";
 import NovoArtigo from "./components/NovoArtigo/NovoArtigo";
 import EditarArtigo from "./components/EditarArtigo";
 import LoginForm from "./components/LoginForm/LoginForm";
+
+
+const baseUrl = process.env.PUBLIC_URL; // will be /hypercomp
 
 export default class extends Component {
   componentDidMount() {
@@ -21,8 +25,6 @@ export default class extends Component {
       messagingSenderId: "322208106644"
     };
     firebase.initializeApp(config);
-
-    
   }
 
   validadeToken() {
@@ -30,7 +32,7 @@ export default class extends Component {
 
     if (token) {
       axios.post(`${globalUrl}validateToken`, { token }).then(res => {
-        console.log(res)
+        console.log(res);
         if (res.data) {
           axios.defaults.headers.common["Authorization"] = localStorage.getItem(
             "jwtToken"

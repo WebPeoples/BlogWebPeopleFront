@@ -14,5 +14,5 @@ export const EDITANDO_ARTIGO = "editando_artigo";
 export const MODIFICA_EMAIL = "modifica_email";
 export const MODIFICA_PASSWORD = "modifica_password";
 
-/* dev URL -> */ export const globalUrl = "http://localhost:4000/";
-/* deploy URL ->  export const globalUrl = "https://api-webpeople.herokuapp.com/" */
+/* dev URL -> export const globalUrl = "http://localhost:4000/";*/ 
+/* deploy URL ->  */ export const globalUrl = "https://api-webpeople.herokuapp.com/"

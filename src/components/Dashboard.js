@@ -5,7 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import { globalUrl } from "./types";
 import { Grid, Col, Row, Image, Button } from "react-bootstrap";
 
-import NavBar from "./VisualComponents/NavBar";
+import NavBar from "./VisualComponents/NavBar.jsx";
 
 class Dashboard extends Component {
   constructor(props) {

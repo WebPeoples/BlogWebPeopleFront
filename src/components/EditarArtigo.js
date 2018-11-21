@@ -16,7 +16,7 @@ import {
   reiniciarEstado,
   modificaImagem
 } from "./../actions/NovoArtigoAction";
-import NavBar from "./VisualComponents/NavBar";
+import NavBar from "./VisualComponents/NavBar.jsx";
 
 class EditarArtigo extends Component {
   constructor(props) {

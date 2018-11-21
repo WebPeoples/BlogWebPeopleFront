@@ -15,7 +15,7 @@ export default props => (
   <Navbar id="NavBar">
         
     <Nav  id="ulNav">
-      <a href="#/dashboard"><Image src="../../images/logo_menu.png" responsive id="navLogo" /></a>
+      <a href="#/dashboard"><Image src="https://www.webpeople.net.br/blog/images/logo_menu.png" responsive id="navLogo" /></a>
       <li><a href="https://www.webpeople.net.br/blog/">Blog</a></li>
       <li><a href="https://www.webpeople.net.br/formulario.html">Soluções</a></li>
       
