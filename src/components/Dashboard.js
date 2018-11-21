@@ -33,6 +33,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    document.title = "Blog WebPeople";
     axios.get(`${globalUrl}ListaArtigos`).then(data => {
       this.setState({ listaArtigos: data.data });
     });

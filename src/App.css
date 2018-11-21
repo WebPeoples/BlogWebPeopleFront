@@ -15,7 +15,7 @@
 .App-title {
   color: #f57315;
   text-align: justify;
-  margin-bottom: 15px
+  margin-bottom: 15px;
 }
 
 .App-subtitle {
@@ -43,9 +43,15 @@
   text-align: left;
 }
 
-#autor_criacao p{
+#autor_criacao p {
   font-size: 0.9em;
   text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+  .div-texto {
+    margin-top: 30px;
+  }
 }
 
 .div-texto {

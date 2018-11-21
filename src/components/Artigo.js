@@ -52,7 +52,6 @@ class Artigo extends Component {
     texto = (
       <div
         className="div-texto"
-        style={{ paddingLeft: 200, paddingRight: 200 }}
         dangerouslySetInnerHTML={{ __html: this.state.texto }}
       />
     );
@@ -80,9 +79,10 @@ class Artigo extends Component {
                 <h5 className="App-subtitle">{this.state.subtitle}</h5>
               </Col>
             </Row>
+            {texto}
           </Grid>
 
-          {texto}
+          
         </div>
       </div>
     );
