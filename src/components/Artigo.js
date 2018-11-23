@@ -4,12 +4,12 @@ import logo from "../images/logo_menu.png";
 import "../App.css";
 import axios from "axios";
 import { globalUrl } from "./types";
-import { Grid, Row, Col } from "react-bootstrap";
+import { Grid, Row, Col, Image } from "react-bootstrap";
 
 import NavBar from "./VisualComponents/NavBar.jsx";
 
 let texto = "";
-let index = "";
+let alias = "";
 
 class Artigo extends Component {
   constructor(props) {
@@ -23,12 +23,11 @@ class Artigo extends Component {
       autor: "",
       data_criacao: ""
     };
-
-    index = this.props.match.params.id;
   }
 
   componentDidMount() {
-    const url = `${globalUrl}artigo/${index}`;
+    alias = this.props.match.params.alias;
+    const url = `${globalUrl}artigo/${alias}`;
 
     axios.get(url).then(response => {
       document.title = response.data.titulo;
@@ -66,9 +65,21 @@ class Artigo extends Component {
                 <h2 className="App-title">{this.state.title}</h2>
 
                 <div id="autor_criacao">
-                  <p>Por: {this.state.autor} <br/> Criado: {this.state.data_criacao}</p>
+                  <p>
+                    <Image
+                      src="https://www.webpeople.net.br/blog/images/avatar.png"
+                      responsive
+                      style={{ marginBottom: 10}}
+                    />{" "}
+                    {this.state.autor} <br />{" "}
+                    <Image
+                      src="https://www.webpeople.net.br/blog/images/calendar.png"
+                      responsive
+                    />
+                    : {this.state.data_criacao}
+                  </p>
                 </div>
-                
+
                 <img
                   src={this.state.image}
                   className="Image-capa"
@@ -81,8 +92,6 @@ class Artigo extends Component {
             </Row>
             {texto}
           </Grid>
-
-          
         </div>
       </div>
     );

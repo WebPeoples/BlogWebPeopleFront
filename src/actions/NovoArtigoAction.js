@@ -9,6 +9,7 @@ import {
   REINICIAR_ESTADO,
   globalUrl,
   MODIFICA_IMAGEM,
+  MODIFICA_ALIAS,
   PROGRESS_BAR,
   EDITANDO_ARTIGO
 } from "../components/types";
@@ -57,6 +58,14 @@ export const modificaImagem = imagem => {
   };
 };
 
+export const modificaAlias = imagem => {
+  return {
+    type: MODIFICA_ALIAS,
+    payload: imagem
+  };
+};
+
+
 export const modificaEvent = event => {
   console.log(event);
   return {
@@ -95,7 +104,8 @@ export const editaArtigo = (
   autor,
   texto,
   index,
-  imagem
+  imagem,
+  alias
 ) => {
   return dispatch => {
     dispatch({
@@ -111,7 +121,8 @@ export const editaArtigo = (
       dispatch,
       "EditaArtigo",
       index,
-      imagem
+      imagem,
+      alias
     );
   };
 };
@@ -126,7 +137,8 @@ const uploadImage = (
   dispatch,
   editOrInsert,
   index,
-  imagem
+  imagem,
+  alias
 ) => {
   let data = {
     titulo,
@@ -134,7 +146,8 @@ const uploadImage = (
     autor,
     texto,
     id: index,
-    imagem
+    imagem,
+    alias
   };
 
   if (event.name != null) {

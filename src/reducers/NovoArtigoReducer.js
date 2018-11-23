@@ -4,6 +4,7 @@ import {
   MODIFICA_AUTOR,
   MODIFICA_TEXTO,
   MODIFICA_EVENT,
+  MODIFICA_ALIAS,
   REINICIAR_ESTADO,
   MODIFICA_IMAGEM,
   ADICIONA_ARTIGO_ERRO,
@@ -22,7 +23,8 @@ const INITIAL_STATE = {
   event: {},
   errorMsg: "",
   addIsOk: false,
-  progressBar: ''
+  progressBar: '',
+  alias: ''
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -42,6 +44,9 @@ export default (state = INITIAL_STATE, action) => {
 
     case MODIFICA_IMAGEM:
       return { ...state, imagem: action.payload };
+    
+    case MODIFICA_ALIAS: 
+      return { ...state, alias: action.payload }
 
     case MODIFICA_EVENT:
       return { ...state, event: action.payload };

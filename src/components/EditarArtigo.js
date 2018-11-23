@@ -14,17 +14,21 @@ import {
   modificaEvent,
   editaArtigo,
   reiniciarEstado,
-  modificaImagem
+  modificaImagem,
+  modificaAlias
 } from "./../actions/NovoArtigoAction";
 import NavBar from "./VisualComponents/NavBar.jsx";
 
+let aliasG = '';
+let index = 0;
 class EditarArtigo extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       imagem: "",
-      uploadImage: "selecione uma imagem"
+      uploadImage: "selecione uma imagem",
+      alias: ''
     };
   }
 
@@ -32,9 +36,9 @@ class EditarArtigo extends Component {
     if (!localStorage.getItem("jwtToken")) {
       this.props.history.push("/login-wp-admins-secret");
     }
-    const index = localStorage.getItem("currentArticle");
+    const alias = localStorage.getItem("currentArticle");
 
-    const url = `${globalUrl}artigo/${index}`;
+    const url = `${globalUrl}artigo/${alias}`;
 
     axios.get(url).then(response => {
       this.props.modificaTitulo(response.data.titulo);
@@ -42,10 +46,11 @@ class EditarArtigo extends Component {
       this.props.modificaAutor(response.data.autor);
       this.props.modificaTexto(response.data.texto);
       this.props.modificaImagem(response.data.imagem);
+      index = response.data.id;
     });
 
     this.setState({
-      imagem: this.props.imagem
+      imagem: this.props.imagem,
     });
 
     this.props.reiniciarEstado();
@@ -64,9 +69,7 @@ class EditarArtigo extends Component {
   }
 
   _editarArtigo() {
-    const index = localStorage.getItem("currentArticle");
-
-    console.log(this.props.imagem);
+    
     this.props.editaArtigo(
       this.props.event,
       this.props.titulo,
@@ -75,7 +78,8 @@ class EditarArtigo extends Component {
       this.props.autor,
       this.props.texto,
       index,
-      this.props.imagem
+      this.props.imagem,
+      this.props.titulo.split(' ').join('-')
     );
   }
 
@@ -190,6 +194,7 @@ const mapStateToProps = state => ({
   subtitulo: state.NovoArtigoReducer.sub,
   data_criacao: state.NovoArtigoReducer.data_criacao,
   imagem: state.NovoArtigoReducer.imagem,
+  alias: state.NovoArtigoReducer.alias,
   autor: state.NovoArtigoReducer.autor,
   texto: state.NovoArtigoReducer.texto,
   event: state.NovoArtigoReducer.event,
@@ -208,6 +213,7 @@ export default connect(
     modificaEvent,
     editaArtigo,
     reiniciarEstado,
-    modificaImagem
+    modificaImagem,
+    modificaAlias
   }
 )(EditarArtigo);

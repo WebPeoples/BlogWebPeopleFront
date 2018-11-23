@@ -18,23 +18,27 @@ class Dashboard extends Component {
     };
   }
 
-  navegarParaArtigos(index) {
-    localStorage.setItem("currentArticle", index);
+  navegarParaArtigos(alias) {
+    alias = alias.split('?').join('%3F')
+    localStorage.setItem("currentArticle", alias);
     this.props.history.push({
-      pathname: `/artigo/${index}`
+      pathname: `/artigo/${alias}`
     });
   }
 
-  navegarParaEditar(index) {
-    localStorage.setItem("currentArticle", index);
+  navegarParaEditar(alias) {
+    alias = alias.split('?').join('%3F')
+    localStorage.setItem("currentArticle", alias);
     this.props.history.push({
-      pathname: `/editar-artigo/${index}`
+      pathname: `/editar-artigo/${alias}`
     });
   }
 
   componentDidMount() {
+    
     document.title = "Blog WebPeople";
     axios.get(`${globalUrl}ListaArtigos`).then(data => {
+      console.log(data.data)
       this.setState({ listaArtigos: data.data });
     });
   }
@@ -47,11 +51,11 @@ class Dashboard extends Component {
 
     for (let x = 0; x < listaArtigos.length; x++) {
       let image = listaArtigos[x].imagem;
-
+      console.log(listaArtigos[x].id)
       let BtnEdit = localStorage.getItem("jwtToken") ? (
         <Button
           bsStyle="primary"
-          onClick={() => this.navegarParaEditar(listaArtigos[x].id)}
+          onClick={() => this.navegarParaEditar(listaArtigos[x].alias)}
           className="btnEditar"
         >
           EDITAR
@@ -64,13 +68,13 @@ class Dashboard extends Component {
             <div className="div-title-subtitle">
               <h2
                 className="title-article"
-                onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+                onClick={() => this.navegarParaArtigos(listaArtigos[x].alias)}
               >
                 {listaArtigos[x].titulo}
               </h2>
               <p
                 className="subtitle-card-article"
-                onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+                onClick={() => this.navegarParaArtigos(listaArtigos[x].alias)}
               >
                 {listaArtigos[x].subtitulo}
               </p>
@@ -79,7 +83,7 @@ class Dashboard extends Component {
             </div>
 
             <Image
-              onClick={() => this.navegarParaArtigos(listaArtigos[x].id)}
+              onClick={() => this.navegarParaArtigos(listaArtigos[x].alias)}
               src={image}
               className="image-card-article"
               responsive

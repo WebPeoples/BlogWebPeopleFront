@@ -55,7 +55,7 @@ export default class extends Component {
     this.validadeToken();
     return (
       <Switch>
-        <Route path="/artigo/:id" component={Artigo} />
+        <Route path="/artigo/:alias" component={Artigo} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/novo-artigo" component={NovoArtigo} />
         <Route path="/login-wp-admins-secret" component={LoginForm} />
